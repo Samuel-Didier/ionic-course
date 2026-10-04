@@ -60,3 +60,4 @@ Pas besoin : Cordova, Objective-C, Gradle, React.
 
 - Besoin d'une API ? `node_modules/@ionic/core/components/*.d.ts` est la référence **locale, à jour, hors-ligne** (`ion-content`, `ion-modal`…).
 - Migration v8 → v9 ? `npx @ionic/migrate --dry-run` puis voir [91-pieges-v9.md](91-pieges-v9.md).
+# ionic-course
