@@ -43,6 +43,10 @@ jobs:
       - run: node web/scripts/smoke.mjs
 
       - uses: actions/configure-pages@v5
+        with:
+          # active Pages via l'API si le dépôt n'a pas encore de site
+          # (évite l'erreur « Not Found » quand la source n'est pas réglée sur GitHub Actions)
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
