@@ -1,0 +1,11 @@
+# artefacts de génération et dépendances
+web/node_modules/
+web/site/
+web/scripts/.shots/
+
+# système / éditeurs
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log

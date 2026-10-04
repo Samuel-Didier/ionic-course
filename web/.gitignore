@@ -1,0 +1,5 @@
+node_modules/
+scripts/.shots/
+# site/ n'est pas versionné : il est régénéré par `npm run build`
+# (option B « branche gh-pages » : git add -f site avant npm run deploy)
+site/

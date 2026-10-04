@@ -1,0 +1,59 @@
+# Déploiement du cours Ionic sur GitHub Pages
+#
+# ⚠️ Cette copie est à installer dans <racine-du-dépôt>/.github/workflows/deploy.yml
+#    (GitHub n'exécute un workflow que depuis la racine du dépôt).
+#    Elle suppose que la racine du dépôt = ce dossier `course/`.
+#    Si ton dépôt contient `course/` (donc `course/web/…`), remplace `web/` par `course/web/`.
+
+name: Déployer le cours Ionic sur GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# n'autorise que le dépôt owner à publier
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - run: npm ci --prefix web
+
+      # le site est régénéré à chaque push : les fiches .md sont la seule source
+      - run: node web/build.mjs
+
+      # test de fumée headless (navigation, quiz, recherche, mobile, persistance)
+      - run: node web/scripts/smoke.mjs
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
